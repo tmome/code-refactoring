@@ -1,4 +1,4 @@
-package code.refactoring._01_smell_mysterious_name._01_before;
+package code.refactoring._01_smell_mysterious_name._02_change_method_declaration;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -13,14 +13,22 @@ import org.kohsuke.github.GitHubBuilder;
 public class StudyDashboard {
 
     /**
-     * 이해하기 힘든 이름(냄세 나는 이해하기 힘든 이름 리펙토링)
+     * 함수 선언 변경하기
      */
 
     private Set<String> usernames = new HashSet<>();
 
     private Set<String> reviews = new HashSet<>();
 
-    private void studyReviews(GHIssue issue) throws IOException {
+    /**
+     * 이슈에 작성되어 있는 이슈 작성자 목록과 코멘트 작성자 목록을 읽어옵니다.
+     * @throws IOException
+     */
+    private void loadReviews() throws IOException {
+        GitHub gitHub = new GitHubBuilder().withOAuthToken("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").build();
+        GHRepository repository = gitHub.getRepository("tmome/code-refactoring");
+        GHIssue issue = repository.getIssue(1);
+
         List<GHIssueComment> comments = issue.getComments();
         for (GHIssueComment comment : comments) {
             usernames.add(comment.getUserName());
@@ -37,13 +45,8 @@ public class StudyDashboard {
     }
 
     public static void main(String[] args) throws IOException {
-        GitHub gitHub = new GitHubBuilder().withOAuthToken("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").build();
-
-        GHRepository repository = gitHub.getRepository("tmome/code-refactoring");
-        GHIssue issue = repository.getIssue(1);
-
         StudyDashboard studyDashboard = new StudyDashboard();
-        studyDashboard.studyReviews(issue);
+        studyDashboard.loadReviews();
         studyDashboard.getUsernames().forEach(System.out::println);
         studyDashboard.getReviews().forEach(System.out::println);
     }
