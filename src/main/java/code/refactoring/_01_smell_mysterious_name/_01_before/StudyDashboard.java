@@ -33,9 +33,13 @@ public class StudyDashboard {
     }
 
     public static void main(String[] args) throws IOException {
-        GitHub gitHub = new GitHubBuilder().withOAuthToken("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").build();
+        GitHub gitHub = new GitHubBuilder().withOAuthToken("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").build();
+
+        GHRepository repository = gitHub.getRepository("tmome/code-refactoring");
+        GHIssue issue = repository.getIssue(1);
 
         StudyDashboard studyDashboard = new StudyDashboard();
+        studyDashboard.studyReviews(issue);
         studyDashboard.getUsernames().forEach(System.out::println);
         studyDashboard.getReviews().forEach(System.out::println);
     }
