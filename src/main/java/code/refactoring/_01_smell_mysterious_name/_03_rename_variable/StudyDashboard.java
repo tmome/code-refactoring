@@ -8,6 +8,7 @@ import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueComment;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
+import org.kohsuke.github.GitHubBuilder;
 
 public class StudyDashboard {
 
@@ -24,7 +25,7 @@ public class StudyDashboard {
      * @throws IOException
      */
     private void loadReviews() throws IOException {
-        GitHub gitHub = GitHub.connect();
+        GitHub gitHub = new GitHubBuilder().withOAuthToken("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").build();
         GHRepository repository = gitHub.getRepository("tmome/code-refactoring");
         GHIssue issue = repository.getIssue(1);
 

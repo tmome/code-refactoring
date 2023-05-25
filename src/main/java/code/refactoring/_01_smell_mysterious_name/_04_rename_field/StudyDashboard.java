@@ -8,6 +8,7 @@ import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueComment;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
+import org.kohsuke.github.GitHubBuilder;
 
 public class StudyDashboard {
 
@@ -16,9 +17,11 @@ public class StudyDashboard {
      */
 
     //TODO : usernames -> reviewers 변경 Description : review 에 작성자들을 읽는데 usernames 보다 reviewers 가 더 적절.
-    private Set<String> reviewers = new HashSet<>();
 
-    private Set<String> reviews = new HashSet<>();
+    //TODO : 자바 14부터 record 라는 자료구조가 생김. 그 전에는 dto, vo 형태로 final, setter 제한 등으로 immutable 하게 작업 했었음.
+//    private Set<String> reviewers = new HashSet<>();
+//    private Set<String> reviews = new HashSet<>();
+    private Set<StudyReview> studyReviews = new HashSet<>();
 
 
     /**
@@ -26,29 +29,23 @@ public class StudyDashboard {
      * @throws IOException
      */
     private void loadReviews() throws IOException {
-        GitHub gitHub = GitHub.connect();
+        GitHub gitHub = new GitHubBuilder().withOAuthToken("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").build();
         GHRepository repository = gitHub.getRepository("tmome/code-refactoring");
         GHIssue issue = repository.getIssue(30);
 
         List<GHIssueComment> reviews = issue.getComments();
         for (GHIssueComment review : reviews) {
-            reviewers.add(review.getUserName());
-            this.reviews.add(review.getBody());
+            studyReviews.add(new StudyReview(review.getUserName(), review.getBody()));
         }
     }
 
-    public Set<String> getReviewers() {
-        return reviewers;
-    }
-
-    public Set<String> getReviews() {
-        return reviews;
+    public Set<StudyReview> getStudyReviews() {
+        return studyReviews;
     }
 
     public static void main(String[] args) throws IOException {
         StudyDashboard studyDashboard = new StudyDashboard();
         studyDashboard.loadReviews();
-        studyDashboard.getReviewers().forEach(System.out::println);
-        studyDashboard.getReviews().forEach(System.out::println);
+        studyDashboard.getStudyReviews().forEach(System.out::println);
     }
 }
