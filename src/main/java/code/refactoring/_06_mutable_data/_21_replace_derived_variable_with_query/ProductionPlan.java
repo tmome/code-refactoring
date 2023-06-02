@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductionPlan {
+    //TODO : 계산식 함수를 만들어 불필요한 함수 제거
 
     private List<Double> adjustments = new ArrayList<>();
 
