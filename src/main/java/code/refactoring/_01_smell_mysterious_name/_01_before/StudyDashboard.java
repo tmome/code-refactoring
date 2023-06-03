@@ -12,10 +12,6 @@ import org.kohsuke.github.GitHubBuilder;
 
 public class StudyDashboard {
 
-    /**
-     * 이해하기 힘든 이름(냄세 나는 이해하기 힘든 이름 리펙토링)
-     */
-
     private Set<String> usernames = new HashSet<>();
 
     private Set<String> reviews = new HashSet<>();
@@ -37,10 +33,10 @@ public class StudyDashboard {
     }
 
     public static void main(String[] args) throws IOException {
-        GitHub gitHub = new GitHubBuilder().withOAuthToken("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").build();
+        GitHub gitHub = new GitHubBuilder().withOAuthToken("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").build();
 
-        GHRepository repository = gitHub.getRepository("tmome/code-refactoring");
-        GHIssue issue = repository.getIssue(1);
+        GHRepository repository = gitHub.getRepository("whiteship/live-study");
+        GHIssue issue = repository.getIssue(30);
 
         StudyDashboard studyDashboard = new StudyDashboard();
         studyDashboard.studyReviews(issue);

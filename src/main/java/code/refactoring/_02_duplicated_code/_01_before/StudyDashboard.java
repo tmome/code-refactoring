@@ -12,7 +12,7 @@ public class StudyDashboard {
     private void printParticipants(int eventId) throws IOException {
         // Get github issue to check homework
         GitHub gitHub = GitHub.connect();
-        GHRepository repository = gitHub.getRepository("tmome/code-refactoring");
+        GHRepository repository = gitHub.getRepository("whiteship/live-study");
         GHIssue issue = repository.getIssue(eventId);
 
         // Get participants
@@ -26,7 +26,7 @@ public class StudyDashboard {
     private void printReviewers() throws IOException {
         // Get github issue to check homework
         GitHub gitHub = GitHub.connect();
-        GHRepository repository = gitHub.getRepository("tmome/code-refactoring");
+        GHRepository repository = gitHub.getRepository("whiteship/live-study");
         GHIssue issue = repository.getIssue(30);
 
         // Get reviewers

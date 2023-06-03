@@ -13,8 +13,6 @@ import org.kohsuke.github.GitHub;
 
 public class StudyDashboard {
 
-    //TODO : 조건문 분해하기 : 조건문 안에 if/else 등이 들어가게 될 경우 복잡도가 증가할 수 있기때문에 함수로 뽑아내면서 의미를 부여할 수 있음.
-
     private final int totalNumberOfEvents;
 
     public StudyDashboard(int totalNumberOfEvents) {
@@ -28,7 +26,7 @@ public class StudyDashboard {
 
     private void print() throws IOException, InterruptedException {
         GitHub gitHub = GitHub.connect();
-        GHRepository repository = gitHub.getRepository("tmome/code-refactoring");
+        GHRepository repository = gitHub.getRepository("whiteship/live-study");
         List<Participant> participants = new CopyOnWriteArrayList<>();
 
         ExecutorService service = Executors.newFixedThreadPool(8);
@@ -63,26 +61,15 @@ public class StudyDashboard {
     }
 
     private Participant findParticipant(String username, List<Participant> participants) {
-        return isNewParticipant(username, participants)
-            ? createNewParticipant(username, participants)
-            : findExistingParticipant(username, participants);
-    }
-
-    private Participant findExistingParticipant(String username, List<Participant> participants) {
         Participant participant;
-        participant = participants.stream().filter(p -> p.username().equals(username)).findFirst().orElseThrow();
-        return participant;
-    }
+        if (participants.stream().noneMatch(p -> p.username().equals(username))) {
+            participant = new Participant(username);
+            participants.add(participant);
+        } else {
+            participant = participants.stream().filter(p -> p.username().equals(username)).findFirst().orElseThrow();
+        }
 
-    private Participant createNewParticipant(String username, List<Participant> participants) {
-        Participant participant;
-        participant = new Participant(username);
-        participants.add(participant);
         return participant;
-    }
-
-    private boolean isNewParticipant(String username, List<Participant> participants) {
-        return participants.stream().noneMatch(p -> p.username().equals(username));
     }
 
 }

@@ -15,8 +15,6 @@ import org.kohsuke.github.GitHub;
 
 public class StudyDashboard {
 
-    //TODO : 반복문 쪼개기 : 반복문을 여러개로 쪼개다보면 쉽게 이해가 가능하고 수정이 가능하다. 리펙토링은 성능과는 무관 리펙토링 이후 최적화 고민해봐야함.
-
     private final int totalNumberOfEvents;
     private final List<Participant> participants;
     private final Participant[] firstParticipantsForEachEvent;
@@ -33,12 +31,8 @@ public class StudyDashboard {
     }
 
     private void print() throws IOException, InterruptedException {
-        checkGithubIssues(getGhRepository());
-        new StudyPrinter(this.totalNumberOfEvents, this.participants).execute();
-        printFirstParticipants();
-    }
+        GHRepository ghRepository = getGhRepository();
 
-    private void checkGithubIssues(GHRepository ghRepository) throws InterruptedException {
         ExecutorService service = Executors.newFixedThreadPool(8);
         CountDownLatch latch = new CountDownLatch(totalNumberOfEvents);
 
@@ -50,11 +44,20 @@ public class StudyDashboard {
                     try {
                         GHIssue issue = ghRepository.getIssue(eventId);
                         List<GHIssueComment> comments = issue.getComments();
+                        Date firstCreatedAt = null;
+                        Participant first = null;
 
-                        checkHomework(comments, eventId);
+                        for (GHIssueComment comment : comments) {
+                            Participant participant = findParticipant(comment.getUserName(), participants);
+                            participant.setHomeworkDone(eventId);
 
-                        firstParticipantsForEachEvent[eventId - 1] = findFirst(comments);
+                            if (firstCreatedAt == null || comment.getCreatedAt().before(firstCreatedAt)) {
+                                firstCreatedAt = comment.getCreatedAt();
+                                first = participant;
+                            }
+                        }
 
+                        firstParticipantsForEachEvent[eventId - 1] = first;
                         latch.countDown();
                     } catch (IOException e) {
                         throw new IllegalArgumentException(e);
@@ -65,27 +68,9 @@ public class StudyDashboard {
 
         latch.await();
         service.shutdown();
-    }
 
-    private Participant findFirst(List<GHIssueComment> comments) throws IOException {
-        Date firstCreatedAt = null;
-        Participant first = null;
-        for (GHIssueComment comment : comments) {
-            Participant participant = findParticipant(comment.getUserName(), participants);
-
-            if (firstCreatedAt == null || comment.getCreatedAt().before(firstCreatedAt)) {
-                firstCreatedAt = comment.getCreatedAt();
-                first = participant;
-            }
-        }
-        return first;
-    }
-
-    private void checkHomework(List<GHIssueComment> comments, int eventId) {
-        for (GHIssueComment comment : comments) {
-            Participant participant = findParticipant(comment.getUserName(), participants);
-            participant.setHomeworkDone(eventId);
-        }
+        new StudyPrinter(this.totalNumberOfEvents, this.participants).execute();
+        printFirstParticipants();
     }
 
     private void printFirstParticipants() {
@@ -94,7 +79,7 @@ public class StudyDashboard {
 
     private GHRepository getGhRepository() throws IOException {
         GitHub gitHub = GitHub.connect();
-        GHRepository repository = gitHub.getRepository("tmome/code-refactoring");
+        GHRepository repository = gitHub.getRepository("whiteship/live-study");
         return repository;
     }
 

@@ -9,12 +9,10 @@ import org.kohsuke.github.GitHub;
 
 public class StudyDashboard {
 
-    //TODO : 관련있는 코드끼리 묶여있어야 코드를 더 쉽게 이해할 수 있다.
-
     private void printParticipants(int eventId) throws IOException {
         // Get github issue to check homework
         GitHub gitHub = GitHub.connect();
-        GHRepository repository = gitHub.getRepository("tmome/code-refactoring");
+        GHRepository repository = gitHub.getRepository("whiteship/live-study");
         GHIssue issue = repository.getIssue(eventId);
 
         // Get participants
@@ -28,7 +26,7 @@ public class StudyDashboard {
     private void printReviewers() throws IOException {
         // Get github issue to check homework
         GitHub gitHub = GitHub.connect();
-        GHRepository repository = gitHub.getRepository("tmome/code-refactoring");
+        GHRepository repository = gitHub.getRepository("whiteship/live-study");
         GHIssue issue = repository.getIssue(30);
 
         // Get reviewers

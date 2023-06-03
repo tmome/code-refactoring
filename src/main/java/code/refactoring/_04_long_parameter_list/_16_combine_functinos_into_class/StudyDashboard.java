@@ -17,7 +17,6 @@ import org.kohsuke.github.GitHub;
 
 public class StudyDashboard {
 
-    //TODO: 여러개의 매개변수를 클래스로 묶기
     private final int totalNumberOfEvents;
 
     public StudyDashboard(int totalNumberOfEvents) {
@@ -31,7 +30,7 @@ public class StudyDashboard {
 
     private void print() throws IOException, InterruptedException {
         GitHub gitHub = GitHub.connect();
-        GHRepository repository = gitHub.getRepository("tmome/code-refactoring");
+        GHRepository repository = gitHub.getRepository("whiteship/live-study");
         List<Participant> participants = new CopyOnWriteArrayList<>();
 
         ExecutorService service = Executors.newFixedThreadPool(8);
@@ -71,12 +70,6 @@ public class StudyDashboard {
         latch.await();
         service.shutdown();
 
-        print(participants);
-
-        new StudyPrinter(this.totalNumberOfEvents, participants).print();
-    }
-
-    private void print(List<Participant> participants) throws IOException {
         try (FileWriter fileWriter = new FileWriter("participants.md");
              PrintWriter writer = new PrintWriter(fileWriter)) {
             participants.sort(Comparator.comparing(Participant::username));

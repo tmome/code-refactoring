@@ -4,8 +4,6 @@ import java.time.LocalDate;
 
 public class Order {
 
-    //TODO : flag 인수 제거하기
-
     private LocalDate placedOn;
     private String deliveryState;
 

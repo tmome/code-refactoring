@@ -2,8 +2,7 @@ package code.refactoring._06_mutable_data._21_replace_derived_variable_with_quer
 
 public class Discount {
 
-    // 파생되어서 온 데이터
-//    private double discountedTotal;
+    private double discountedTotal;
     private double discount;
 
     private double baseTotal;
@@ -13,11 +12,11 @@ public class Discount {
     }
 
     public double getDiscountedTotal() {
-//        assert this.discountedTotal == this.baseTotal - this.discount;
-        return this.baseTotal - this.discount;
+        return this.discountedTotal;
     }
 
     public void setDiscount(double number) {
         this.discount = number;
+        this.discountedTotal = this.baseTotal - this.discount;
     }
 }

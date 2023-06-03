@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -15,8 +16,6 @@ import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 
 public class StudyDashboard {
-
-    //TODO : 객체 통째로 넘기기 : 어떤 한 레코드에서 구할 수 있는 여러 값들을 함수에 전달하는 경우, 해당 매개변수를 레코드 하나로 교체할 수 있다.
 
     private final int totalNumberOfEvents;
 
@@ -31,7 +30,7 @@ public class StudyDashboard {
 
     private void print() throws IOException, InterruptedException {
         GitHub gitHub = GitHub.connect();
-        GHRepository repository = gitHub.getRepository("tmome/code-refactoring");
+        GHRepository repository = gitHub.getRepository("whiteship/live-study");
         List<Participant> participants = new CopyOnWriteArrayList<>();
 
         ExecutorService service = Executors.newFixedThreadPool(8);
@@ -78,16 +77,23 @@ public class StudyDashboard {
             writer.print(header(participants.size()));
 
             participants.forEach(p -> {
-                String markdownForHomework = getMarkdownForParticipant(p);
+                String markdownForHomework = getMarkdownForParticipant(p.username(), p.homework());
                 writer.print(markdownForHomework);
             });
         }
     }
 
-    private String getMarkdownForParticipant(Participant participant) {
-        return String.format("| %s %s | %.2f%% |\n",
-            participant.username(),
-            checkMark(participant, this.totalNumberOfEvents), participant.getRate(this.totalNumberOfEvents));
+    double getRate(Map<Integer, Boolean> homework) {
+        long count = homework.values().stream()
+                .filter(v -> v == true)
+                .count();
+        return (double) (count * 100 / this.totalNumberOfEvents);
+    }
+
+    private String getMarkdownForParticipant(String username, Map<Integer, Boolean> homework) {
+        return String.format("| %s %s | %.2f%% |\n", username,
+                checkMark(homework, this.totalNumberOfEvents),
+                getRate(homework));
     }
 
     /**
@@ -111,10 +117,10 @@ public class StudyDashboard {
     /**
      * |:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|
      */
-    private String checkMark(Participant participant, int totalEvents) {
+    private String checkMark(Map<Integer, Boolean> homework, int totalEvents) {
         StringBuilder line = new StringBuilder();
         for (int i = 1 ; i <= totalEvents ; i++) {
-            if(participant.homework().containsKey(i) && participant.homework().get(i)) {
+            if(homework.containsKey(i) && homework.get(i)) {
                 line.append("|:white_check_mark:");
             } else {
                 line.append("|:x:");

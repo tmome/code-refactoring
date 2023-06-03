@@ -23,7 +23,7 @@ public class StudyDashboard {
 
     private void print() throws IOException, InterruptedException {
         GitHub gitHub = GitHub.connect();
-        GHRepository repository = gitHub.getRepository("tmome/code-refactoring");
+        GHRepository repository = gitHub.getRepository("whiteship/live-study");
         List<Participant> participants = new CopyOnWriteArrayList<>();
 
         int totalNumberOfEvents = 15;

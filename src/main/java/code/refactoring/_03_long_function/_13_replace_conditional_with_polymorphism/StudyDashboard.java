@@ -13,8 +13,6 @@ import org.kohsuke.github.GitHub;
 
 public class StudyDashboard {
 
-    //TODO : 조건문을 다형성으로 바꾸기 : 조건문을 다형성을 사용해서 교체하자. if/switch 등 달라지는 부분만 하위클래스에 둠으로써, 달라지는 부분만 강조
-
     private final int totalNumberOfEvents;
     private final List<Participant> participants;
 
@@ -30,12 +28,12 @@ public class StudyDashboard {
 
     private void print() throws IOException, InterruptedException {
         checkGithubIssues(getGhRepository());
-        new MarkdownPrinter(this.totalNumberOfEvents, this.participants).execute();
+        new StudyPrinter(this.totalNumberOfEvents, this.participants, PrinterMode.MARKDOWN).execute();
     }
 
     private GHRepository getGhRepository() throws IOException {
         GitHub gitHub = GitHub.connect();
-        return gitHub.getRepository("tmome/code-refactoring");
+        return gitHub.getRepository("whiteship/live-study");
     }
 
     private void checkGithubIssues(GHRepository repository) throws InterruptedException {

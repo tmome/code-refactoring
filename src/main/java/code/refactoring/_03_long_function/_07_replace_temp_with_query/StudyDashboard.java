@@ -15,7 +15,6 @@ import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 
 public class StudyDashboard {
-    //TODO : 임시 변수를 질의 함수로 바꿈으로써, 동일한 식의 계산을 피할 수 있음.
 
     public static void main(String[] args) throws IOException, InterruptedException {
         StudyDashboard studyDashboard = new StudyDashboard();
@@ -24,7 +23,7 @@ public class StudyDashboard {
 
     private void print() throws IOException, InterruptedException {
         GitHub gitHub = GitHub.connect();
-        GHRepository repository = gitHub.getRepository("tmome/code-refactoring");
+        GHRepository repository = gitHub.getRepository("whiteship/live-study");
         List<Participant> participants = new CopyOnWriteArrayList<>();
 
         int totalNumberOfEvents = 15;
@@ -72,22 +71,15 @@ public class StudyDashboard {
             writer.print(header(totalNumberOfEvents, participants.size()));
 
             participants.forEach(p -> {
-                String markdownForHomework = getMarkdownForParticipant(totalNumberOfEvents, p);
+                long count = p.homework().values().stream()
+                        .filter(v -> v == true)
+                        .count();
+                double rate = count * 100 / totalNumberOfEvents;
+
+                String markdownForHomework = String.format("| %s %s | %.2f%% |\n", p.username(), checkMark(p, totalNumberOfEvents), rate);
                 writer.print(markdownForHomework);
             });
         }
-    }
-
-    private static double getRate(int totalNumberOfEvents, Participant p) {
-        long count = p.homework().values().stream()
-                .filter(v -> v == true)
-                .count();
-        double rate = count * 100 / totalNumberOfEvents;
-        return rate;
-    }
-
-    private String getMarkdownForParticipant(int totalNumberOfEvents, Participant p) {
-        return String.format("| %s %s | %.2f%% |\n", p.username(), checkMark(p, totalNumberOfEvents), getRate(totalNumberOfEvents, p));
     }
 
     /**
