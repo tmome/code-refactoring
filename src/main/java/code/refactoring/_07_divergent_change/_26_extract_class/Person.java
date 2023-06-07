@@ -11,7 +11,7 @@ public class Person {
     }
 
     public String telephoneNumber() {
-        return this.telephoneNumber.getAreaCode() + " " + this.telephoneNumber.officeNumber();
+        return this.telephoneNumber.toString();
     }
 
     public String name() {

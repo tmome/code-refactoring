@@ -1,5 +1,7 @@
 package code.refactoring._07_divergent_change._26_extract_class;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class TelephoneNumber {
 
   private String areaCode;
@@ -21,5 +23,10 @@ public class TelephoneNumber {
 
   public String officeNumber() {
     return officeNumber;
+  }
+
+  @Override
+  public String toString() {
+    return this.areaCode + StringUtils.SPACE + this.officeNumber;
   }
 }
