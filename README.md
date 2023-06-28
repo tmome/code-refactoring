@@ -212,3 +212,17 @@
 * 함수 추출하기를 사용해 설명이 필요한 부분을 별도의 메소드로 뺀다.
 * 함수 선언부 변경하기를 사용해 함수 이름을 재정의할 수 있다.
 * 시스템적으로 어떤 필요한 규칙이 있다면, 어서션 추가하기(Introduce Assertion)을 적용할 수 있다.
+***
+### 기본 기술
+##### 자주 사용하는 리팩토링 기술 목록
+* 함수 추출하기 (Extract Function)
+* 함수 인라인하기 (Inline Function)
+* 변수 추출하기 (Extract Variable)
+* 변수 인라인하기 (Inline Variable)
+* 함수 선언 변경하기 (Change Function Declaration) 
+* 변수 캡슐화하기 (Encapsulate Variable)
+* 변수 이름 바꾸기 (Rename Variable)
+* 매개변수 객체 만들기 (Introduce Parameter Object)
+* 여러 함수를 클래스로 묶기 (Combine Functions into Class)
+* 여러 함수를 변환 함수로 묶기 (Combine Functions into Trasnform) 
+* 단계 쪼개기 (Split Phase)
