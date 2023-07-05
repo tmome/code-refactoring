@@ -280,3 +280,12 @@
 * 생성자를 팩토리 함수로 바꾸기 (Replace Constructor with Factory Function) 
 * 함수를 명령으로 바꾸기 (Replace Function with Command)
 * 명령을 함수로 바꾸기 (Replace Command with Function)
+***
+### 상속 다루기
+##### 상속을 제대로 사용하는 기술
+* 메소드 올리기 (Pull Up Method)
+* 필드 올리기 (Pull Up Field)
+* 생성자 본문 올리기 (Pull Up Constructor Body)
+* 메서드 내리기 (Push Down Method)
+* 필드 내리기 (Push Down Field)
+* 타입 코드를 서브클래스로 바꾸기 (Replace Type Code with Subclasses)
