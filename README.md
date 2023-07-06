@@ -289,3 +289,8 @@
 * 메서드 내리기 (Push Down Method)
 * 필드 내리기 (Push Down Field)
 * 타입 코드를 서브클래스로 바꾸기 (Replace Type Code with Subclasses)
+* 서브클래스 제거하기 (Remove Subclass)
+* 슈퍼클래스 추출하기 (Extract Superclass)
+* 계층 합치기 (Collapse Hierarchy)
+* 서브클래스를 위임으로 바꾸기 (Replace Subclass with Delegate) 
+* 슈퍼클래스를 위임으로 바꾸기 (Replace Superclass with Delegate)
