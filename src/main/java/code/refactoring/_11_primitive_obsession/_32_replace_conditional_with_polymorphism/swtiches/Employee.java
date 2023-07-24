@@ -2,20 +2,31 @@ package code.refactoring._11_primitive_obsession._32_replace_conditional_with_po
 
 import java.util.List;
 
-public abstract class Employee {
+public class Employee {
 
-    protected List<String> availableProjects;
+    private String type;
 
-    public Employee(List<String> availableProjects) {
+    private List<String> availableProjects;
+
+    public Employee(String type, List<String> availableProjects) {
+        this.type = type;
         this.availableProjects = availableProjects;
     }
 
-    public Employee() {
+    public int vacationHours() {
+        return switch (type) {
+            case "full-time" -> 120;
+            case "part-time" -> 80;
+            case "temporal" -> 32;
+            default -> 0;
+        };
     }
 
-    public abstract int vacationHours();
-
     public boolean canAccessTo(String project) {
-        return this.availableProjects.contains(project);
+        return switch (type) {
+            case "full-time" -> true;
+            case "part-time", "temporal" -> this.availableProjects.contains(project);
+            default -> false;
+        };
     }
 }
